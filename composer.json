@@ -1,0 +1,31 @@
+{
+  "name": "tcstudios/seat-bulletins",
+  "description": "A module for SeAT that provides role-based bulletins",
+  "type": "seat-plugin",
+  "license": "GPL-2.0",
+  "authors": [
+    {
+      "name": "Opusent",
+      "email": "opusent@tabbycatstudios.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "autoload": {
+    "psr-4": {
+      "TCStudios\\Seat\\SeatBulletins\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "TCStudios\\Seat\\SeatBulletins\\BulletinServiceProvider"
+      ]
+    }
+  },
+  "require": {
+    "eveseat/services": "^4.0",
+    "eveseat/eveapi": "^4.0",
+    "eveseat/web": "^4.0"
+  }
+}
