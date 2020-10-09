@@ -3,7 +3,7 @@
 return [
     'bulletins' => [
         'name' => 'Corporate Bulletins',
-        'icon' => 'fa fa-file-text-o',
+        'icon' => 'fas fa-file-alt',
         'route_segment' => 'bulletins',
         'permission' => 'bulletins.view',
         'entries' => [
