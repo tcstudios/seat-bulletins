@@ -6,8 +6,7 @@ use Seat\Services\AbstractSeatPlugin;
 
 class BulletinServiceProvider extends AbstractSeatPlugin
 {
-    public function boot()
-    {
+    public function boot() {
         $this->add_commands();
         $this->add_routes();
         $this->add_views();
