@@ -1,10 +1,9 @@
-@extends('web:layouts.grids.2-8-2')
+@extends('web::layouts.grids.8-4')
 
-@section('title', 'Corporate Bulletins')
-@section('page_header', 'Page Header')
-@section('page_description', 'Description')
+@section('title', 'About Corporation Bulletins')
+@section('page_header', 'About Corporation Bulletins')
 
-@section('center')
+@section('left')
     <div class="card card-default">
         <div class="card-header">
             <h3 class="card-title">Functionality</h3>

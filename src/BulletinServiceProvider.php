@@ -12,6 +12,7 @@ class BulletinServiceProvider extends AbstractSeatPlugin
         $this->add_views();
         $this->add_migrations();
         $this->add_translations();
+        $this->add_publications();
         $this->apply_custom_configuration();
     }
 

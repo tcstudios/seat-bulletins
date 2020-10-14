@@ -12,6 +12,9 @@
   "minimum-stability": "stable",
   "prefer-stable": true,
   "autoload": {
+    "classmap": [
+      "src/database/migrations"
+    ],
     "psr-4": {
       "TCStudios\\Seat\\SeatBulletins\\": "src/"
     }
@@ -26,6 +29,7 @@
   "require": {
     "eveseat/services": "^4.0",
     "eveseat/eveapi": "^4.0",
-    "eveseat/web": "^4.0"
+    "eveseat/web": "^4.0",
+    "ext-json": "*"
   }
 }

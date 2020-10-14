@@ -1,0 +1,30 @@
+.card-header.highlight {
+    background-color: #cfcfef;
+}
+.card-header.error {
+    background-color: #efefcf;
+    font-weight: bold;
+    font-size: 1rem;
+    text-align: center;
+}
+.empty-list {
+    font-weight: bold;
+    font-size: 1rem;
+    text-align: center;
+}
+.secondary {
+    color: lightslategray;
+}
+.padded-badge {
+    padding: 0.25rem;
+}
+.spaced-badge {
+    margin-left: 0.125rem;
+    margin-right: 0.125rem;
+}
+.role-badges {
+    margin-top: 0.25rem;
+}
+.author {
+    font-size: 75%;
+}
