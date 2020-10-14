@@ -38,7 +38,7 @@
                     </tr>
                 @endif
                 @foreach ($bulletins as $index => $bulletin)
-                    <tr>
+                    <tr id="bulletin" data-id="{{ $bulletin->id }}">
                         <td>{{ $bulletin->title }}</td>
                         <td>{{ $bulletin->character_name }}</td>
                         <td>
@@ -53,6 +53,7 @@
                         <td>{{ $bulletin->updated_at->format('Y-m-d H:i:s') }}</td>
                         <td>
                             <button type="button" id="edit-bulletin" name="edit-bulletin" data-id="{{ $index }}" class="btn btn-xs pull-right edit-bulletin secondary"><span class="fas fa-edit"></span></button>
+                            <button type="button" id="delete-bulletin" name="edit-bulletin" data-id="{{ $bulletin->id }}" class="btn btn-xs pull-right delete-bulletin secondary"><span class="fas fa-trash"></span></button>
                         </td>
                     </tr>
                 @endforeach
@@ -71,7 +72,7 @@
                 <form role="form" action="{{ route('bulletins.saveBulletin') }}" method="post">
                     {{ @csrf_field() }}
                     <div class="modal-body">
-                        <input type="hidden" name="id" id="id" value="" />
+                        <input type="hidden" name="id" id="edit-id" value="" />
                         <div class="form-group">
                             <label for="character_name" class="control-label">Author</label>
                             <select id="character_name" name="character_name" class="form-control selectpicker">
@@ -89,7 +90,7 @@
                             <textarea id="text" class="form-control" name="text"></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="roles[]" class="control-label">Roles</label>
+                            <label for="roles" class="control-label">Roles</label>
                             <select id="roles" name="roles[]" multiple class="form-control selectpicker">
                                 @foreach ($roles as $role)
                                     <option value="{{ $role->id }}" id="{{ 'role-'.$role->id }}">{{ $role->title }}</option>
@@ -108,6 +109,28 @@
         </div>
     </div>
 
+    <div class="modal fade" tabindex="-1" role="dialog" id="bulletin-confirm">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h4 class="modal-title">Are you sure?</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <form role="form" action="{{ route('bulletins.deleteBulletin') }}" method="post">
+                    {{ @csrf_field() }}
+                    <input type="hidden" name="id" id="delete-id" value="" />
+                    <div class="modal-body">
+                        <p>Are you sure you want to delete this bulletin?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary" id="deleteConfirm">Delete Bulletin</button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
 @stop
 
 @push('javascript')
@@ -115,18 +138,19 @@
     <script>
         $('#addBulletin').on('click', function() {
             $('#addBulletinModal').modal('show');
-            $('.modal-body #id').val(0);
+            $('.modal-body #edit-id').val(0);
             $('.modal-title.bulletin-header').html('Add Bulletin');
         });
         $(document).on('click', '.edit-bulletin', function() {
-            var bulletins = {!! $bulletins !!};
-            var bulletin = bulletins[$(this).data('id')];
+            let bid = $(this).data('id');
+            let bulletins = {!! $bulletins !!};
+            let bulletin = bulletins[bid];
 
             $('#addBulletinModal').modal('show');
 
             $('.modal-title.bulletin-header').html('Edit Bulletin');
             $('.modal-body #title').val(bulletin.title);
-            $('.modal-body #id').val(bulletin.id);
+            $('.modal-body #edit-id').val(bulletin.id);
             $('.modal-body #character_name').prop('disabled', true);
             let role_value = [];
             for (let role of bulletin.roles) {
@@ -135,10 +159,15 @@
                 role_value.push(role.id);
                 $(selector).selected = 'selected';
             }
-            console.log(role_value);
-            $('.modal-body #roles').selectpicker('val', role_value);
-            $('.modal-body #roles').selectpicker('refresh');
+            let roles = $('.modal-body #roles');
+            roles.selectpicker('val', role_value);
+            roles.selectpicker('refresh');
             tinymce.activeEditor.setContent(bulletin.text);
+        });
+
+        $(document).on('click', '.delete-bulletin', function () {
+            $('#bulletin-confirm').modal('show');
+            $('#delete-id').val($(this).data('id'));
         });
     </script>
 @endpush

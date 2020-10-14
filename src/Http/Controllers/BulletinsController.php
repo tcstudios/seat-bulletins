@@ -2,22 +2,21 @@
 
 namespace TCStudios\Seat\SeatBulletins\Http\Controllers;
 
+use Illuminate\Http\Request;
 use Seat\Web\Http\Controllers\Controller;
 use Seat\Web\Models\Acl\Role;
 use TCStudios\Seat\SeatBulletins\Models\Bulletin;
-use TCStudios\Seat\SeatBulletins\Utility;
 use TCStudios\Seat\SeatBulletins\Validation\BulletinValidation;
 
 class BulletinsController extends Controller {
     public function getAboutView() { return view("bulletins::about"); }
     public function getListView() {
         $role_ids = auth()->user()->roles()->pluck('role_id')->toArray();
-        Utility::console_log($role_ids);
 
         $bulletins = Bulletin::whereHas('roles', function($query) use ($role_ids) {
             $query->whereIn('role_id', $role_ids);
-        })->get();
-        return view('bulletins::list', compact('bulletins'));
+        })->orderBy('updated_at', 'DESC')->get();
+        return view('bulletins::list', compact('bulletins', 'role_ids'));
     }
     public function getManageView() {
         $characters = auth()->user()->characters;
@@ -40,6 +39,14 @@ class BulletinsController extends Controller {
         $bulletin->save();
         $bulletin->roles()->sync($request->roles);
         $bulletin->save();
+        return redirect()->route('bulletins.manage');
+    }
+    public function deleteBulletin(Request $request) {
+        if ($request->id > 0) {
+            $bulletin = Bulletin::find($request->id);
+            if ($bulletin)
+                $bulletin->delete();
+        }
         return redirect()->route('bulletins.manage');
     }
 }

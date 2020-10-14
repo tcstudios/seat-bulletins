@@ -35,7 +35,9 @@
                 </div>
                 <div class="row role-badges">
                     @foreach($bulletin->roles as $role)
-                        <span class="badge badge-primary spaced-badge">{{ $role->title }}</span>
+                        @if(in_array($role->id, $role_ids))
+                            <span class="badge badge-primary spaced-badge">{{ $role->title }}</span>
+                        @endif
                     @endforeach
                 </div>
             </div>
@@ -47,7 +49,6 @@
 @push('javascript')
     <script>
         $(document).on('click', '.toggle-bulletin', function() {
-            console.log('here');
             let id = $(this).data('id');
             let content_selector = '#bulletin-' + id;
             let up_selector = content_selector + '-up';

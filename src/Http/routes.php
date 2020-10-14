@@ -22,12 +22,17 @@ Route::group([
         Route::get('/manage', [
             'as' => 'bulletins.manage',
             'uses' => 'BulletinsController@getManageView',
-            'middleware' => 'can:bulletins.view'
+            'middleware' => 'can:bulletins.create'
         ]);
         Route::post('/save', [
             'as' => 'bulletins.saveBulletin',
             'uses' => 'BulletinsController@saveBulletin',
-            'middleware' => 'can:bulletins.view'
+            'middleware' => 'can:bulletins.create'
+        ]);
+        Route::post('/delete', [
+            'as' => 'bulletins.deleteBulletin',
+            'uses' => 'BulletinsController@deleteBulletin',
+            'middleware' => 'can:bulletins.create'
         ]);
     });
 });
